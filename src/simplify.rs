@@ -7,8 +7,12 @@ impl Expr {
                 let lhs = lhs.simplify();
                 let rhs = rhs.simplify();
                 match (&lhs, &rhs) {
+                    // lhs == rhs, return 2 * lhs
+                    (lhs, rhs) if *lhs == *rhs =>
+                        Expr::Mul(Box::new(Expr::new_val(2.0)), Box::new(lhs.clone())),
                     // Both constants, return mul
-                    (Expr::Const(c1), Expr::Const(c2)) => Expr::new_val(c1 + c2),
+                    (Expr::Const(c1), Expr::Const(c2)) =>
+                        Expr::new_val(c1 + c2),
                     // Constant == 0, return Expr unchanged
                     (Expr::Const(c), x)
                         | (x, Expr::Const(c))
@@ -126,5 +130,14 @@ mod tests {
         let res = c1 / c2;
 
         assert_eq!(res.simplify(), Expr::new_val(0.5));
+    }
+
+    #[test]
+    fn add_like_terms() {
+        let x1 = Expr::new_var("x");
+        let x2 = Expr::new_var("x");
+        let res = x1 + x2;
+
+        assert_eq!(res.simplify(), Expr::new_val(2.0) * Expr::new_var("x"));
     }
 }
