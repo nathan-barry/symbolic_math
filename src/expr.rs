@@ -35,11 +35,11 @@ impl Expr {
     }
 }
 
-// Operations implementations
+// Borrows data
 impl Expr {
-    pub fn eval(self, vars: &HashMap<Symbol, f64>) -> Result<f64, EvalError> {
+    pub fn eval(&self, vars: &HashMap<Symbol, f64>) -> Result<f64, EvalError> {
         match self {
-            Expr::Const(c) => Ok(c),
+            Expr::Const(c) => Ok(*c),
             Expr::Symbol(s) => vars.get(&s).cloned().ok_or(EvalError::SymbolNotFound(s.clone())),
             Expr::Add(lhs, rhs) => {
                 let lhs_val = lhs.eval(vars)?;
@@ -78,6 +78,16 @@ impl Expr {
         }
     }
 
+    pub fn get_symbol(&self) -> Option<Symbol> {
+        match self {
+            Expr::Symbol(s) => Some(s.clone()),
+            _ => None
+        }
+    }
+}
+
+// Takes ownership
+impl Expr {
     pub fn pow(self, expr: Expr) -> Expr {
         Expr::Pow(Box::new(self), Box::new(expr))
     }

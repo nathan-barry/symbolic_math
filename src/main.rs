@@ -9,12 +9,12 @@ fn main() {
     let p = Expr::new_val(2.0);
     let mut vars: HashMap<Symbol, f64> = HashMap::new();
 
-    if let Expr::Symbol(s) = x.clone() {
-        vars.insert(s, 1.0);
-    }
-    if let Expr::Symbol(s) = y.clone() {
-        vars.insert(s, 2.0);
-    }
+
+    vars.insert(x.get_symbol().unwrap(), 1.0);
+    vars.insert(y.get_symbol().unwrap(), 2.0);
+
+    let z = x.clone() + y.clone();
+
     let res = (x+y*c.pow(p)).eval(&vars).unwrap();
     println!("{}", res);
 }
