@@ -10,6 +10,13 @@ impl Expr {
                     // lhs == rhs, return 2 * lhs
                     (lhs, rhs) if *lhs == *rhs =>
                         Expr::Mul(Box::new(Expr::new_val(2.0)), Box::new(lhs.clone())),
+                    // cx + x, return (c+1)x 
+                    (Expr::Mul(c, inside), out)
+                        | (Expr::Mul(inside, c), out)
+                        | (out, Expr::Mul(inside, c))
+                        | (out, Expr::Mul(c, inside))
+                        if ((**inside == *out ) && c.is_const()) =>
+                        Expr::Mul(Box::new(Expr::new_val(c.get_const() + 1.0)), Box::new(out.clone())),
                     // Both constants, return mul
                     (Expr::Const(c1), Expr::Const(c2)) =>
                         Expr::new_val(c1 + c2),
@@ -88,6 +95,17 @@ impl Expr {
                 }
             },
             _ => self.clone()
+        }
+    }
+
+    fn is_const(&self) -> bool {
+        if let Expr::Const(_) = self { true } else { false }
+    }
+
+    fn get_const(&self) -> f64 {
+        match self {
+            Expr::Const(c) => *c,
+            _ => panic!("Cannot call get_const on non-const Expr")
         }
     }
 }

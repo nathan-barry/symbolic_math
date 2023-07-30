@@ -42,7 +42,18 @@ impl Display for Expr {
             Expr::Symbol(s) => write!(f, "{}", s.name),
             Expr::Add(lhs, rhs) => write!(f, "({} + {})", lhs, rhs),
             Expr::Sub(lhs, rhs) => write!(f, "({} - {})", lhs, rhs),
-            Expr::Mul(lhs, rhs) => write!(f, "({} * {})", lhs, rhs),
+            Expr::Mul(lhs, rhs) => {
+                if let Expr::Const(c) = **lhs {
+                    if let Expr::Symbol(_) = **rhs {
+                        return write!(f, "{}{}", c, rhs);
+                    }
+                } else if let Expr::Const(c) = **rhs {
+                    if let Expr::Symbol(_) = **lhs {
+                        return write!(f, "{}{}", c, lhs);
+                    }
+                }
+                write!(f, "({} * {})", lhs, rhs)
+            }
             Expr::Div(lhs, rhs) => write!(f, "({} / {})", lhs, rhs),
             Expr::Pow(lhs, rhs) => write!(f, "({} ^ {})", lhs, rhs),
             Expr::Neg(expr) => write!(f, "-{}", expr),

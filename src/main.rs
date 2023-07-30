@@ -18,8 +18,11 @@ fn main() {
 
     let x1 = Expr::new_var("x");
     let x2 = Expr::new_var("x");
+    let x3 = Expr::new_var("x");
     let res = x1 + x2;
     println!("{}", &res);
-    println!("{}", res.simplify());
+    println!("{}", &res.simplify());
 
+    let res2 = res + x3;
+    println!("{}", &res2.simplify());
 }
