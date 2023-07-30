@@ -7,8 +7,13 @@ impl Expr {
                 let lhs = lhs.simplify();
                 let rhs = rhs.simplify();
                 match (&lhs, &rhs) {
+                    // Both constants, return mul
                     (Expr::Const(c1), Expr::Const(c2)) => Expr::new_val(c1 + c2),
-                    (Expr::Const(c), x) | (x, Expr::Const(c)) if *c == 0.0 => x.clone(),
+                    // Constant == 0, return Expr unchanged
+                    (Expr::Const(c), x)
+                        | (x, Expr::Const(c))
+                        if *c == 0.0 => x.clone(),
+                    // Else
                     _ => Expr::Add(Box::new(lhs), Box::new(rhs)),
                 }
             },
@@ -16,8 +21,13 @@ impl Expr {
                 let lhs = lhs.simplify();
                 let rhs = rhs.simplify();
                 match (&lhs, &rhs) {
+                    // Both constants, return diff
                     (Expr::Const(c1), Expr::Const(c2)) => Expr::new_val(c1 - c2),
-                    (Expr::Const(c), x) | (x, Expr::Const(c)) if *c == 0.0 => x.clone(),
+                    // Constant == 0, return Expr unchanged
+                    (Expr::Const(c), x)
+                        | (x, Expr::Const(c))
+                        if *c == 0.0 => x.clone(),
+                    // Else
                     _ => Expr::Sub(Box::new(lhs), Box::new(rhs)),
                 }
             },
@@ -25,10 +35,21 @@ impl Expr {
                 let lhs = lhs.simplify();
                 let rhs = rhs.simplify();
                 match (&lhs, &rhs) {
+                    // Both constants, return mul
                     (Expr::Const(c1), Expr::Const(c2)) => Expr::new_val(c1 * c2),
-                    (Expr::Symbol(s), Expr::Const(c)) | (Expr::Const(c), Expr::Symbol(s)) if *c == 1.0 => Expr::new_var(&s.name),
-                    (Expr::Const(c), _) | (_, Expr::Const(c)) if *c == 0.0 => Expr::Const(0.0),
-                    (Expr::Const(c), x) | (x, Expr::Const(c)) if *c == -1.0 => Expr::Neg(Box::new(x.clone())),
+                    // Constant == 1, return Expr unchanged
+                    (x, Expr::Const(c))
+                        | (Expr::Const(c), x)
+                        if *c == 1.0 => x.clone(),
+                    // Constant == 0, return 0
+                    (Expr::Const(c), _)
+                        | (_, Expr::Const(c))
+                        if *c == 0.0 => Expr::Const(0.0),
+                    // Constant == -1, return Neg
+                    (Expr::Const(c), x)
+                        | (x, Expr::Const(c))
+                        if *c == -1.0 => Expr::Neg(Box::new(x.clone())),
+                    // Else
                     _ => Expr::Mul(Box::new(lhs), Box::new(rhs)),
                 }
             },
@@ -36,9 +57,15 @@ impl Expr {
                 let lhs = lhs.simplify();
                 let rhs = rhs.simplify();
                 match (&lhs, &rhs) {
+                    // Both constants, return div
                     (Expr::Const(c1), Expr::Const(c2)) => Expr::new_val(c1 / c2),
-                    (Expr::Symbol(s), Expr::Const(c)) | (Expr::Const(c), Expr::Symbol(s)) if *c == 1.0 => Expr::new_var(&s.name),
+                    // Symbol, constant == 1, return symbol
+                    (x, Expr::Const(c))
+                        | (Expr::Const(c), x)
+                        if *c == 1.0 => x.clone(),
+                    // 0 divided by x, return 0
                     (Expr::Const(c), _) if *c == 0.0 => Expr::Const(0.0),
+                    // Else
                     _ => Expr::Div(Box::new(lhs), Box::new(rhs)),
                 }
             },
@@ -46,8 +73,13 @@ impl Expr {
                 let lhs = lhs.simplify();
                 let rhs = rhs.simplify();
                 match (&lhs, &rhs) {
+                    // x^1, returns x
                     (x, Expr::Const(c)) if *c == 1.0 => x.clone(),
+                    // x^0, returns 1
+                    (_, Expr::Const(c)) if *c == 0.0 => Expr::Const(1.0), // TODO: Only if x != 0
+                    // 1^x, returns 1
                     (Expr::Const(c), _) if *c == 1.0 => Expr::Const(1.0),
+                    // Else
                     _ => Expr::Pow(Box::new(lhs), Box::new(rhs))
                 }
             },
