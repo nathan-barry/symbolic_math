@@ -1,5 +1,5 @@
 /// The 'Symbol' struct represents a symbolic variable
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Symbol {
     pub name: String,
 }
