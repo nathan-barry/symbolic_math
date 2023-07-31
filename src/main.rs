@@ -14,15 +14,27 @@ fn main() {
     vars.insert(y.get_symbol().unwrap(), 2.0);
 
     let res = (x+y*c.pow(p)).eval(&vars).unwrap();
-    println!("{}", &res);
+    println!("1: {}", &res);
 
     let x1 = Expr::new_var("x");
     let x2 = Expr::new_var("x");
     let x3 = Expr::new_var("x");
     let res = x1 + x2;
-    println!("{}", &res);
-    println!("{}", &res.simplify());
+    println!("2: {}", &res);
+    println!("2 simplify: {}", &res.simplify());
+
+    let x1 = Expr::new_var("x");
+    let x2 = Expr::new_var("x");
+    let res2 = x1*x2;
+    println!("3: {}", &res2);
+    println!("3 simplify: {}", &res2.simplify());
 
     let res2 = res + x3;
-    println!("{}", &res2.simplify());
+    println!("4: {}", &res2.simplify());
+
+    let a = Expr::new_var("a");
+    let b = Expr::new_var("b");
+    let c = Expr::new_var("c");
+    let res4 = a.pow(b).pow(c);
+    println!("5: {}", &res4.simplify());
 }

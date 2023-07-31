@@ -46,6 +46,12 @@ impl Expr {
                 let lhs = lhs.simplify();
                 let rhs = rhs.simplify();
                 match (&lhs, &rhs) {
+                    // lhs == rhs, return lhs^2
+                    (lhs, rhs) if *lhs == *rhs =>
+                        Expr::Pow(Box::new(lhs.clone()), Box::new(Expr::new_val(2.0))),
+                    // x^a * x^b, return x^(a+b)
+                    (Expr::Pow(base1, a), Expr::Pow(base2, b)) if *base1 == *base2 =>
+                        Expr::Pow(base1.clone(), Box::new(Expr::Add(a.clone(), b.clone()))),
                     // Both constants, return mul
                     (Expr::Const(c1), Expr::Const(c2)) => Expr::new_val(c1 * c2),
                     // Constant == 1, return Expr unchanged
@@ -84,6 +90,12 @@ impl Expr {
                 let lhs = lhs.simplify();
                 let rhs = rhs.simplify();
                 match (&lhs, &rhs) {
+                    // (x^a)^b, returns x^(a*b)
+                    (Expr::Pow(base, p1), p2) =>
+                        Expr::Pow(
+                            base.clone(),
+                            Box::new(Expr::Mul(p1.clone(), Box::new(p2.clone())))
+                        ),
                     // x^1, returns x
                     (x, Expr::Const(c)) if *c == 1.0 => x.clone(),
                     // x^0, returns 1
