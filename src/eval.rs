@@ -50,3 +50,30 @@ impl Expr {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::HashMap;
+
+    #[test]
+    fn eval_basic_operations() {
+        let x = Expr::new_var("x");
+        let y = Expr::new_var("y");
+        let mut vars: HashMap<Symbol, f64> = HashMap::new();
+        vars.insert(x.get_symbol().unwrap(), 2.0);
+        vars.insert(y.get_symbol().unwrap(), 3.0);
+
+        let res_add = x.clone() + y.clone();
+        assert_eq!(res_add.eval(&vars).unwrap(), 5.0);
+        let res_sub = x.clone() - y.clone();
+        assert_eq!(res_sub.eval(&vars).unwrap(), -1.0);
+        let res_mul = x.clone() * y.clone();
+        assert_eq!(res_mul.eval(&vars).unwrap(), 6.0);
+        let res_div = y.clone() / x.clone();
+        assert_eq!(res_div.eval(&vars).unwrap(), 1.5);
+
+        let res_complicated = (res_add.pow(res_sub) * res_div) * res_mul;
+        assert_eq!(res_complicated.eval(&vars).unwrap(), 1.8);
+    }
+}
