@@ -1,3 +1,7 @@
+pub mod operations;
+pub mod eval;
+pub mod simplify;
+
 use std::fmt::{self, Formatter, Display};
 use crate::symbol::Symbol;
 
