@@ -2,12 +2,6 @@
 ///
 /// `Symbol` holds a `String` that is its name. It provides functionality to
 /// create a new `Symbol` from a string slice. 
-///
-/// # Examples
-///
-/// ```
-/// let x = Symbol::new("x");
-/// ```
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Symbol {
     /// The name of the symbolic variable.
@@ -19,11 +13,7 @@ impl Symbol {
     ///
     /// The function takes a string slice as input and returns a `Symbol` with the input as its name.
     ///
-    /// # Examples
-    ///
-    /// ```
-    /// let x = Symbol::new("x");
-    /// ```
+    /// Note: Should normally use s.get_symbol() for Expr::Symbol(s) instead.
     pub fn new(name: &str) -> Symbol {
         Symbol { name: name.into() }
     }

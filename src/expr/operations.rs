@@ -16,6 +16,8 @@ impl Expr {
     /// # Examples
     ///
     /// ```
+    /// use symbolic_math::expr::Expr;
+    ///
     /// let a = Expr::new_val(2.0);
     /// let b = Expr::new_val(3.0);
     /// let result = a.pow(b);

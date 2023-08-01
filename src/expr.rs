@@ -1,6 +1,7 @@
 pub mod operations;
 pub mod eval;
 pub mod simplify;
+pub mod expansion;
 
 use std::fmt::{self, Formatter, Display};
 use crate::symbol::Symbol;
@@ -37,6 +38,8 @@ impl Expr {
     /// # Examples
     ///
     /// ```
+    /// use symbolic_math::expr::Expr;
+    ///
     /// let x = Expr::new_var("x");
     /// ```
     pub fn new_var(str: &str) -> Expr {
@@ -48,6 +51,8 @@ impl Expr {
     /// # Examples
     ///
     /// ```
+    /// use symbolic_math::expr::Expr;
+    ///
     /// let two = Expr::new_val(2.0);
     /// ```
     pub fn new_val(val: f64) -> Expr {
@@ -63,6 +68,9 @@ impl Expr {
     /// # Examples
     ///
     /// ```
+    /// use symbolic_math::expr::Expr;
+    /// use symbolic_math::symbol::Symbol;
+    ///
     /// let x = Expr::new_var("x");
     /// assert_eq!(x.get_symbol().unwrap(), Symbol::new("x"));
     /// ```

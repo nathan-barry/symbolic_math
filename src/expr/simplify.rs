@@ -9,6 +9,8 @@ impl Expr {
     /// # Example
     ///
     /// ```
+    /// use symbolic_math::expr::Expr;
+    ///
     /// let x1 = Expr::new_var("x");
     /// let x2 = Expr::new_var("x");
     /// let res = x1 + x2;
@@ -131,10 +133,12 @@ impl Expr {
     /// # Example
     ///
     /// ```
+    /// use symbolic_math::expr::Expr;
+    ///
     /// let expr = Expr::new_val(2.0);
     /// assert_eq!(expr.is_const(), true);
     /// ```
-    fn is_const(&self) -> bool {
+    pub fn is_const(&self) -> bool {
         if let Expr::Const(_) = self { true } else { false }
     }
 
@@ -147,10 +151,12 @@ impl Expr {
     /// # Example
     ///
     /// ```
+    /// use symbolic_math::expr::Expr;
+    ///
     /// let expr = Expr::new_val(2.0);
     /// assert_eq!(expr.get_const(), 2.0);
     /// ```
-    fn get_const(&self) -> f64 {
+    pub fn get_const(&self) -> f64 {
         match self {
             Expr::Const(c) => *c,
             _ => panic!("Cannot call get_const on non-const Expr")

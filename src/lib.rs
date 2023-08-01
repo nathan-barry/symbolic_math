@@ -27,17 +27,19 @@
 //!
 //! ```toml
 //! [dependencies]
-//! expr_lib = "0.1.0"
+//! symbolic_math = "0.1.0"
 //! ```
 //!
 //! Then, you can use it in your code like so:
 //!
 //! ```rust
-//! use expr_lib::{Expr, Symbol};
+//! use symbolic_math::expr::Expr;
 //!
 //! let x = Expr::new_var("x");
-//! let expr = Expr::Add(Box::new(x), Box::new(Expr::new_val(2.0)));
-//! println!("{}", expr);  // prints: "(x + 2)"
+//! let y = Expr::new_var("x");
+//! let z = Expr::new_var("x");
+//! let res = (x.clone() + x.clone() + y.clone() * y.clone()).pow(z);
+//! println!("{}", res);  // prints: "(2x + y^2)^z"
 //! ```
 //!
 //! See the documentation for each individual type and method for more information on how to use this library.

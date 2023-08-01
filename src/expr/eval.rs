@@ -23,10 +23,17 @@ impl Expr {
     /// # Example
     ///
     /// ```
-    /// let expr = Expr::Add(Box::new(Expr::Symbol(Symbol::new("x"))), Box::new(Expr::Const(2.0)));
+    /// use symbolic_math::expr::Expr;
+    /// use symbolic_math::symbol::Symbol;
+    /// use std::collections::HashMap;
+    ///
+    /// let x = Expr::new_var("x");
+    /// let y = Expr::new_var("y");
+    /// let expr = x * y;
     /// let mut vars = HashMap::new();
-    /// vars.insert(Symbol::new("x"), 2.0);
-    /// assert_eq!(expr.eval(&vars), Ok(4.0));
+    /// vars.insert(Symbol::new("x"), 3.0);
+    /// vars.insert(Symbol::new("y"), 9.0);
+    /// assert_eq!(expr.eval(&vars).unwrap(), 27.0);
     /// ```
     pub fn eval(&self, vars: &HashMap<Symbol, f64>) -> Result<f64, EvalError> {
         match self {

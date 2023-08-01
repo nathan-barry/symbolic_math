@@ -8,8 +8,6 @@ fn main() {
     let c = Expr::new_val(3.0);
     let p = Expr::new_val(2.0);
     let mut vars: HashMap<Symbol, f64> = HashMap::new();
-
-
     vars.insert(x.get_symbol().unwrap(), 1.0);
     vars.insert(y.get_symbol().unwrap(), 2.0);
 
@@ -37,4 +35,17 @@ fn main() {
     let c = Expr::new_var("c");
     let res4 = a.pow(b).pow(c);
     println!("5: {}", &res4.simplify());
+
+    let x = Expr::new_var("x");
+    let y = Expr::new_var("y");
+    let z = Expr::new_var("z");
+    let res = (x.clone() + x.clone() + y.clone() * y.clone()).pow(z);
+    println!("{}", res);  // prints: "(2x + y^2)^z"
+    println!("{}", res.simplify());  // prints: "(2x + y^2)^z"
+
+    let mut vars: HashMap<Symbol, f64> = HashMap::new();
+    vars.insert(Symbol::new("x"), 4.0);
+    vars.insert(Symbol::new("y"), 3.0);
+    vars.insert(Symbol::new("z"), 2.0);
+    println!("{}", res.eval(&vars).unwrap()); // prints: "289"
 }
