@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use crate::expr::Expr;
 use crate::symbol::Symbol;
 
+/// Enum representing possible errors that can occur while evaluating an expression.
 #[derive(Debug)]
 pub enum EvalError {
     SymbolNotFound(Symbol),
@@ -9,6 +10,24 @@ pub enum EvalError {
 }
 
 impl Expr {
+    /// Evaluates the current expression using the given map of symbols to values.
+    ///
+    /// If an error occurs during the evaluation, such as not finding a symbol in the map
+    /// or attempting an undefined operation, it returns an `Err(EvalError)`.
+    ///
+    /// # Arguments
+    ///
+    /// * `&self` - A reference to the current instance of `Expr`.
+    /// * `vars` - A map from symbols to their corresponding values.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let expr = Expr::Add(Box::new(Expr::Symbol(Symbol::new("x"))), Box::new(Expr::Const(2.0)));
+    /// let mut vars = HashMap::new();
+    /// vars.insert(Symbol::new("x"), 2.0);
+    /// assert_eq!(expr.eval(&vars), Ok(4.0));
+    /// ```
     pub fn eval(&self, vars: &HashMap<Symbol, f64>) -> Result<f64, EvalError> {
         match self {
             Expr::Const(c) => Ok(*c),
@@ -16,22 +35,22 @@ impl Expr {
             Expr::Add(lhs, rhs) => {
                 let lhs_val = lhs.eval(vars)?;
                 let rhs_val = rhs.eval(vars)?;
-                Ok(lhs_val + rhs_val)
+                Ok(round(lhs_val + rhs_val))
             }
             Expr::Sub(lhs, rhs) => {
                 let lhs_val = lhs.eval(vars)?;
                 let rhs_val = rhs.eval(vars)?;
-                Ok(lhs_val - rhs_val)
+                Ok(round(lhs_val - rhs_val))
             }
             Expr::Mul(lhs, rhs) => {
                 let lhs_val = lhs.eval(vars)?;
                 let rhs_val = rhs.eval(vars)?;
-                Ok(lhs_val * rhs_val)
+                Ok(round(lhs_val * rhs_val))
             }
             Expr::Div(lhs, rhs) => {
                 let lhs_val = lhs.eval(vars)?;
                 let rhs_val = rhs.eval(vars)?;
-                Ok(lhs_val / rhs_val)
+                Ok(round(lhs_val / rhs_val))
             }
             Expr::Pow(lhs, rhs) => {
                 let base_val = lhs.eval(vars)?;
@@ -40,7 +59,7 @@ impl Expr {
                 if res.is_nan() || res.is_infinite() {
                     Err(EvalError::UndefinedOperation)
                 } else {
-                    Ok(res)
+                    Ok(round(res))
                 }
             }
             Expr::Neg(expr) => {
@@ -49,6 +68,18 @@ impl Expr {
             }
         }
     }
+}
+
+/// Rounds a given `f64` value to the 14th decimal place.
+///
+/// This function is used in the `eval` method above to round the results of floating
+/// point operations, mitigating the effects of floating point precision errors.
+///
+/// # Arguments
+///
+/// * `val` - The `f64` value to be rounded.
+fn round(val: f64) -> f64 {
+    (val * 10e14).round() / 10e14
 }
 
 #[cfg(test)]

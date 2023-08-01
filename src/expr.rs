@@ -1,32 +1,67 @@
 use std::fmt::{self, Formatter, Display};
 use crate::symbol::Symbol;
 
-/// The 'Expr' enum represents a mathematical expression
+/// Represents a mathematical expression.
+///
+/// Expressions can be constants (floating point numbers), symbolic variables, or operations
+/// (addition, subtraction, multiplication, division, exponentiation, negation). Each operation
+/// can contain other expressions, allowing complex, nested expressions to be represented.
 #[derive(Debug, Clone, PartialEq)]
 pub enum Expr {
+    /// A constant (floating point number).
     Const(f64),
+    /// A symbolic variable.
     Symbol(Symbol),
+    /// Addition of two expressions.
     Add(Box<Expr>, Box<Expr>),
+    /// Subtraction of two expressions.
     Sub(Box<Expr>, Box<Expr>),
+    /// Multiplication of two expressions.
     Mul(Box<Expr>, Box<Expr>),
+    /// Division of two expressions.
     Div(Box<Expr>, Box<Expr>),
+    /// Exponentiation of two expressions.
     Pow(Box<Expr>, Box<Expr>),
+    /// Negation of an expression.
     Neg(Box<Expr>),
 }
 
 // Constructors
 impl Expr {
+    /// Constructs a new symbolic variable with the given name.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let x = Expr::new_var("x");
+    /// ```
     pub fn new_var(str: &str) -> Expr {
         Expr::Symbol(Symbol::new(str))
     }
 
+    /// Constructs a new constant value.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let two = Expr::new_val(2.0);
+    /// ```
     pub fn new_val(val: f64) -> Expr {
         Expr::Const(val)
     }
+
 }
 
 // Borrows Data
 impl Expr {
+    /// If the expression is a symbolic variable, returns the symbol; otherwise, returns `None`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let x = Expr::new_var("x");
+    /// assert_eq!(x.get_symbol().unwrap(), Symbol::new("x"));
+    /// ```
     pub fn get_symbol(&self) -> Option<Symbol> {
         match self {
             Expr::Symbol(s) => Some(s.clone()),

@@ -3,6 +3,25 @@ use crate::expr::Expr;
 
 // Takes ownership
 impl Expr {
+    /// Raises an `Expr` instance to the power of another, creating a new `Expr::Pow` variant.
+    ///
+    /// This method consumes the original `Expr` instances, and produces a new one that
+    /// represents the mathematical operation of exponentiation.
+    ///
+    /// # Arguments
+    ///
+    /// * `self` - The base of the exponentiation.
+    /// * `expr` - The exponent in the exponentiation.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let a = Expr::new_val(2.0);
+    /// let b = Expr::new_val(3.0);
+    /// let result = a.pow(b);
+    /// ```
+    ///
+    /// Note: This function consumes the `Expr` instances that it operates on.
     pub fn pow(self, expr: Expr) -> Expr {
         Expr::Pow(Box::new(self), Box::new(expr))
     }

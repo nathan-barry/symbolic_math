@@ -1,6 +1,19 @@
 use crate::expr::Expr;
 
 impl Expr {
+    /// Simplifies the current expression to a possibly simpler form.
+    ///
+    /// The method simplifies the mathematical expressions based on several
+    /// algebraic rules.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let x1 = Expr::new_var("x");
+    /// let x2 = Expr::new_var("x");
+    /// let res = x1 + x2;
+    /// assert_eq!(res.simplify(), Expr::new_val(2.0) * Expr::new_var("x"));
+    /// ```
     pub fn simplify(&self) -> Expr {
         match self {
             Expr::Add(lhs, rhs) => {
@@ -110,10 +123,33 @@ impl Expr {
         }
     }
 
+    /// Checks if the current expression is a constant.
+    ///
+    /// Returns `true` if the current instance of `Expr` is a `Const` variant, and
+    /// `false` otherwise.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let expr = Expr::new_val(2.0);
+    /// assert_eq!(expr.is_const(), true);
+    /// ```
     fn is_const(&self) -> bool {
         if let Expr::Const(_) = self { true } else { false }
     }
 
+    /// Returns the `f64` value inside the `Const` variant of `Expr`.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if called on a non-`Const` `Expr`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// let expr = Expr::new_val(2.0);
+    /// assert_eq!(expr.get_const(), 2.0);
+    /// ```
     fn get_const(&self) -> f64 {
         match self {
             Expr::Const(c) => *c,
