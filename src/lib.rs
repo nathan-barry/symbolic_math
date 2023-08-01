@@ -27,7 +27,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! symbolic_math = "0.1.0"
+//! symbolic_math = "0.1.1"
 //! ```
 //!
 //! Then, you can use it in your code like so:

@@ -23,7 +23,7 @@ To include `symbolic_math` in your project, add the following to your `Cargo.tom
 
 ```toml
 [dependencies]
-symbolic_math = "0.1.0"
+symbolic_math = "0.1.1"
 ```
 
 You can then use it in your code as follows:
