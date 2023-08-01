@@ -1,6 +1,6 @@
-//! # Expr Library
+//! # Symbolic_Math
 //!
-//! `expr_lib` is a library for representing and manipulating mathematical expressions. It provides structures
+//! `symbolic_math` is a library for representing and manipulating mathematical expressions. It provides structures
 //! to model different mathematical operations including addition, subtraction, multiplication, division, and power. 
 //! The expressions can be comprised of constants, symbols, or other expressions. The library also provides facilities 
 //! for evaluating and simplifying these expressions.
@@ -15,7 +15,7 @@
 //! * Constructors for creating new `Expr` instances.
 //! * A `Display` implementation for converting an `Expr` to a string.
 //! * A `simplify` method for simplifying an `Expr`.
-//! * A `Expand method` method for basic expanding of an `Expr`.
+//! * A `expand` method for basic expanding of an `Expr`.
 //! * An `eval` method for evaluating an `Expr`.
 //!
 //! The library also includes operator overloads for `Expr`, located in the `operators` module, 

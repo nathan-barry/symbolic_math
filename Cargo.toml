@@ -2,7 +2,7 @@
 name = "symbolic_math"
 version = "0.1.0"
 edition = "2021"
-description = "A symbolic math library that allows simplification, basic expansion, and evaluation."
+description = "A Rust library for performing symbolic mathematics. Supports basic arithmetic operations, expression simplification, and expansion, and evaluation."
 license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
