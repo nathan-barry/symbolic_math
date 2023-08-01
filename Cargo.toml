@@ -4,6 +4,8 @@ version = "0.1.1"
 edition = "2021"
 description = "A Rust library for performing symbolic mathematics. Supports basic arithmetic operations, expression simplification, and expansion, and evaluation."
 license = "MIT"
+repository = "https://github.com/nathan-barry/symbolic_math"
+documentation = "https://docs.rs/symbolic_math"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
